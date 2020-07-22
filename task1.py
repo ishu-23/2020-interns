@@ -21,14 +21,13 @@ for i in data['rates']:
 list_of_dates=sorted(list_of_dates)
 for i in list_of_dates:
     list_of_rates.append(data['rates'][i][currency_symbol])
-print(str(list_of_dates))
-print(str(list_of_rates))
 maximum_rate,minimum_rate = max(list_of_rates),min(list_of_rates)
 file = open('svg_file.svg','w')
 file.write('''<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">\n''')
 file.write('''<rect width="100%" height="100%" fill="white" />\n''')
 file.write("<line x1=\"100"  "\" y1=\"440" "\" x2=\"" +str(120 + len(list_of_rates) * 15) + "\" y2=\" 440" + "\" stroke=\"" + str("mediumorchid") + "\" />\n")
 file.write("<line x1=\"100"  "\" y1=\"440" "\" x2=\"100" + "\" y2=\"" +str(400 - 200 * (maximum_rate - minimum_rate) / (maximum_rate - minimum_rate))+ "\" stroke=\"" + str("mediumorchid") + "\" />\n")
+file.write('''<text x=\"40\" y="''' + str(400 - 200 * (maximum_rate - minimum_rate) / (maximum_rate - minimum_rate))+''' " fill=\"darkmagenta\">'''+ str(maximum_rate) +'''</text>\n''')
 x=[] 
 y=[]
 for i in range(len(list_of_rates)):
@@ -47,7 +46,7 @@ for i in range(len(list_of_rates)):
         cy=400 - 200 * (list_of_rates[i] - minimum_rate)/(maximum_rate - minimum_rate)
         file.write('''<text x=\"40\" y="'''+str(cy+4)+'''" fill=\"darkmagenta\">'''+str(list_of_rates[i])+'''</text>\n''')
         new=list_of_rates[i]+a
-file.write("<text x=\"100\" y=\"570\" fill=\"darkmagenta\" style=\"font:24px sans-serif\">""INR Exchange rates"+"</text>\n")
+file.write("<text x=\"100\" y=\"570\" fill=\"darkmagenta\" style=\"font:24px sans-serif\">"+str(currency_symbol)+"  Exchange rates"+"</text>\n")
 file.write("<text x=\"100\" y=\"600\" fill=\"darkgoldenrod\">"+"Start Date: "+str(starting_date)[:11]+"</text>\n")
 file.write("<text x=\"300\" y=\"600\" fill=\"darkgoldenrod\">"+"End Date: "+str(ending_date)[:11]+"</text>\n")
 file.write("<text x=\""+str(120 + len(list_of_rates) * 15)+"\" y=\"460\" fill=\"darkmagenta\" >"+"Dates "+"</text>\n")
