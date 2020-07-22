@@ -13,8 +13,8 @@ print("Enter the ending date in formate YY/MM/DD")
 year,month,day=(map(int,input().split("-")))
 ending_date=date(year,month,day)
 print(ending_date)
-url='https://api.exchangeratesapi.io/history?start_at={}&end_at={}&symbols=INR,GBP'.format(starting_date,ending_date)
-url2='https://api.exchangeratesapi.io/latest?symbols=INR,GBP'
+url='https://api.exchangeratesapi.io/history?start_at={}&end_at={}&symbols={},{}'.format(starting_date,ending_date,currency_symbol1,currency_symbol2)
+url2='https://api.exchangeratesapi.io/latest?symbols={},{}'.format(currency_symbol1,currency_symbol1)
 response = requests.get(url)
 l = response.text
 data = json.loads(l)
@@ -30,8 +30,8 @@ for i in data['rates']:
     list_of_dates.append(i)
 list_of_dates=sorted(list_of_dates)
 for i in list_of_dates:
-    INR_rates.append(data['rates'][i]['INR'])
-    GBP_rates.append(data['rates'][i]['GBP'])
+    INR_rates.append(data['rates'][i][currency_symbol1])
+    GBP_rates.append(data['rates'][i][currency_symbol2])
 maximum_rate,minimum_rate = max(INR_rates),min(INR_rates)
 file = open('t5.svg','w')
 file.write('''<svg width="1000" height="1000" xmlns="http://www.w3.org/2000/svg">\n''')
@@ -93,6 +93,5 @@ file.write("<text x=\"100\" y=\"600\" fill=\"darkgoldenrod\">"+"Start Date: "+st
 file.write("<text x=\"300\" y=\"600\" fill=\"darkgoldenrod\">"+"End Date: "+str(ending_date)[:11]+"</text>\n")
 file.write("<text x=\""+str(120 + len(GBP_rates) * 15)+"\" y=\"460\" fill=\"darkmagenta\" >"+"Dates "+"</text>\n")
 file.write("<text x=\"40\" y=\"" +str(400 - 200 * (maximum_rate2 - minimum_rate2) / (maximum_rate2 - minimum_rate2)) + "\" fill=\"darkmagenta\" >"+"Rates "+"</text>\n")
-file.write("<text x=\"100\" y=\"650\" fill=\"darkgoldenrod\">"+"Latest rate of "+str(currency_symbol2)+"  :  "+str(data2['rates'][currency_symbol2])+"</text>\n")
 file.write("</svg>\n")
 file.close()
